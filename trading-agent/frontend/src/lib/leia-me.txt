@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Bibliotecas e Utilitários
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Funções auxiliares e lógica de negócio do lado do cliente.
+
+FICHEIROS ESPERADOS:
+theme.ts
+
+CONFIGURAÇÕES APLICÁVEIS:
+Lógica de leitura de localStorage e prefers-color-scheme.
+================================================================================

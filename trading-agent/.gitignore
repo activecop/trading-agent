@@ -1,0 +1,74 @@
+# =====================================================
+# Copyright © Luís Garcês — Todos os direitos reservados
+# Contacto: 915 020 614 | activecop@gmail.com
+# =====================================================
+
+# 🔒 SEGURANÇA - NUNCA subir segredos
+.env
+.env.local
+.env.*.local
+backend/.env
+*.pem
+*.key
+secrets/
+
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# 📦 Node.js
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/.turbo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# 🐳 Docker
+docker-compose.override.yml
+
+# 💾 Base de dados
+*.db
+*.sqlite
+*.sqlite3
+migrations/
+
+# 📁 Logs
+logs/
+*.log
+
+# 🖥️ Sistema operativo
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# 📊 Exportações temporárias
+agentlog_*.pdf
+agentlog_*.csv
+agentlog_*.json
+agentlog_*.md
+exports/
+
+# 🧪 Testes e cobertura
+.coverage
+htmlcov/
+.tox/

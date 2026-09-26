@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Interativo — Agente de Trading Autónomo | © Luís Garcês</title>
+<meta name="description" content="Guia passo a passo detalhado para instalação, configuração e utilização do Agente de Trading Autónomo Open-Source.">
+<meta name="author" content="Luís Garcês">
+
+<!-- Script anti-FOUC: aplica tema ANTES do paint -->
+<script>
+  (function() {
+    const stored = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = stored || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+
+<style>
+  /* =========================================================
+     Copyright © Luís Garcês — Todos os direitos reservados
+     Contacto: 915 020 614 | activecop@gmail.com
+     ========================================================= */
+
+  :root {
+    --bg: #0B0E11;
+    --surface: #1E2329;
+    --surface-2: #2B3139;
+    --text: #EAECEF;
+    --text-muted: #848E9C;
+    --border: #2B3139;
+    --accent: #F0B90B;
+    --accent-hover: #F8D12F;
+    --success: #0ECB81;
+    --danger: #F6465D;
+    --code-bg: #0B0E11;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  [data-theme="light"] {
+    --bg: #FFFFFF;
+    --surface: #F5F5F5;
+    --surface-2: #EBEBEB;
+    --text: #1E2329;
+    --text-muted: #5E6673;
+    --border: #E0E0E0;
+    --accent: #0052FF;
+    --accent-hover: #0040CC;
+    --success: #00A86B;
+    --danger: #CF304A;
+    --code-bg: #F0F2F5;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background var(--transition), color var(--transition);
+    overflow-x: hidden;
+  }
+
+  /* ========== HEADER ========== */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    transition: background var(--transition);
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-weight: 900;
+  }
+
+  .theme-toggle {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+  }
+
+  .theme-toggle:hover {
+    background: var(--accent);
+    color: #000;
+    transform: rotate(15deg);
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    opacity: 0.08;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto 2rem;
+  }
+
+  .badges {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .badge {
+    padding: 0.5rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ========== LAYOUT PRINCIPAL ========== */
+  .main-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 3rem;
+  }
+
+  @media (max-width: 968px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .sidebar { position: static !important; }
+  }
+
+  /* ========== SIDEBAR ========== */
+  .sidebar {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+    height: fit-content;
+  }
+
+  .sidebar-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all var(--transition);
+    border-left: 2px solid transparent;
+  }
+
+  .nav-link:hover {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .nav-link.active {
+    background: var(--surface);
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+
+  .nav-number {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    min-width: 20px;
+  }
+
+  .nav-link.active .nav-number {
+    color: var(--accent);
+  }
+
+  /* ========== CONTEÚDO ========== */
+  .content { min-width: 0; }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    transition: all var(--transition);
+    scroll-margin-top: 100px;
+  }
+
+  .step:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .step-number {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    color: #000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .step h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .step h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem;
+    color: var(--text);
+  }
+
+  .step p {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .step ul, .step ol {
+    color: var(--text-muted);
+    margin: 0.75rem 0 1rem 1.5rem;
+  }
+
+  .step li { margin-bottom: 0.5rem; }
+
+  /* ========== CODE BLOCKS ========== */
+  .code-block {
+    position: relative;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 1rem 0 1.5rem;
+    overflow: hidden;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: 'SF Mono', Monaco, monospace;
+  }
+
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .copy-btn:hover {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+
+  .copy-btn.copied {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+  }
+
+  pre {
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  code {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    background: var(--code-bg);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: var(--accent);
+  }
+
+  pre code {
+    background: transparent;
+    padding: 0;
+    color: var(--text);
+  }
+
+  /* Syntax highlighting */
+  .kw { color: #F0B90B; }
+  .str { color: #0ECB81; }
+  .com { color: #848E9C; font-style: italic; }
+  .fn { color: #61AFEF; }
+  .num { color: #D19A66; }
+
+  /* ========== ALERT BOXES ========== */
+  .alert {
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    border-left: 3px solid;
+  }
+
+  .alert-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+  }
+
+  .alert-warning {
+    background: rgba(246, 70, 93, 0.08);
+    border-color: var(--danger);
+    color: var(--text);
+  }
+
+  .alert-info {
+    background: rgba(240, 185, 11, 0.08);
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .alert-success {
+    background: rgba(14, 203, 129, 0.08);
+    border-color: var(--success);
+    color: var(--text);
+  }
+
+  .alert strong { color: var(--text); }
+
+  /* ========== TABLES ========== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    background: var(--code-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  th, td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    background: var(--surface-2);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+
+  td { font-size: 0.9rem; }
+
+  tr:last-child td { border-bottom: none; }
+
+  /* ========== FOOTER ========== */
+  footer {
+    margin-top: 4rem;
+    padding: 3rem 2rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .footer-content h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer-contacts {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+    color: var(--text-muted);
+  }
+
+  .footer-contacts a {
+    color: var(--accent);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity var(--transition);
+  }
+
+  .footer-contacts a:hover { opacity: 0.7; }
+
+  .disclaimer {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: rgba(246, 70, 93, 0.08);
+    border: 1px solid var(--danger);
+    border-radius: 10px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .copyright {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* ========== SCROLL PROGRESS ========== */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+    width: 0%;
+    z-index: 200;
+    transition: width 100ms ease;
+  }
+
+  /* ========== BACK TO TOP ========== */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--transition);
+    z-index: 50;
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .back-to-top:hover {
+    transform: translateY(-4px);
+  }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step {
+    animation: fadeInUp 0.6s ease backwards;
+  }
+
+  .step:nth-child(1) { animation-delay: 0.05s; }
+  .step:nth-child(2) { animation-delay: 0.1s; }
+  .step:nth-child(3) { animation-delay: 0.15s; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">LG</div>
+      <div>
+        <div>Agente de Trading</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400;">Guia Interativo v1.0</div>
+      </div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+      <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Guia Interativo de Utilização</h1>
+  <p>Aprende a instalar, configurar e operar o Agente de Trading Autónomo Open-Source de forma segura, passo a passo, com explicações detalhadas e exemplos práticos.</p>
+  <div class="badges">
+    <div class="badge"><span class="badge-dot"></span> 100% Open-Source</div>
+    <div class="badge">🔒 Paper Trading por Defeito</div>
+    <div class="badge">💰 Zero Custos Obrigatórios</div>
+    <div class="badge">🇵🇹 Documentado em PT-PT</div>
+  </div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Índice de Passos</div>
+    <ul class="nav-list" id="navList">
+      <li><a href="#step-1" class="nav-link"><span class="nav-number">01</span> Pré-requisitos</a></li>
+      <li><a href="#step-2" class="nav-link"><span class="nav-number">02</span> Clonar o Projeto</a></li>
+      <li><a href="#step-3" class="nav-link"><span class="nav-number">03</span> Gerar Chaves de Segurança</a></li>
+      <li><a href="#step-4" class="nav-link"><span class="nav-number">04</span> Configurar Exchanges</a></li>
+      <li><a href="#step-5" class="nav-link"><span class="nav-number">05</span> Iniciar com Docker</a></li>
+      <li><a href="#step-6" class="nav-link"><span class="nav-number">06</span> Dashboard Web</a></li>
+      <li><a href="#step-7" class="nav-link"><span class="nav-number">07</span> Estratégias</a></li>
+      <li><a href="#step-8" class="nav-link"><span class="nav-number">08</span> Gestão de Risco</a></li>
+      <li><a href="#step-9" class="nav-link"><span class="nav-number">09</span> Exportar Logs</a></li>
+      <li><a href="#step-10" class="nav-link"><span class="nav-number">10</span> Ativar Modo Live</a></li>
+      <li><a href="#step-11" class="nav-link"><span class="nav-number">11</span> Troubleshooting</a></li>
+    </ul>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- STEP 1 -->
+    <section class="step" id="step-1">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <h2>Pré-requisitos do Sistema</h2>
+      </div>
+      <p>Antes de começares, certifica-te de que o teu computador cumpre os seguintes requisitos mínimos. Todos os softwares necessários são <strong>gratuitos</strong>.</p>
+
+      <h3>Software Necessário</h3>
+      <table>
+        <thead>
+          <tr><th>Ferramenta</th><th>Versão Mínima</th><th>Para quê?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Docker Desktop</td><td>24.0+</td><td>Orquestrar backend, Postgres e Redis</td></tr>
+          <tr><td>Node.js</td><td>20 LTS</td><td>Compilar o frontend Next.js</td></tr>
+          <tr><td>Python</td><td>3.11+</td><td>Backend FastAPI (corrido dentro do Docker)</td></tr>
+          <tr><td>Git</td><td>2.40+</td><td>Clonar o repositório</td></tr>
+          <tr><td>Editor de Código</td><td>—</td><td>VS Code recomendado</td></tr>
+        </tbody>
+      </table>
+
+      <div class="alert alert-info">
+        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <div><strong>Dica:</strong> Se usas Windows, ativa o WSL2 antes de instalares o Docker. No macOS, basta instalar o Docker Desktop oficial.</div>
+      </div>
+
+      <h3>Verificar Instalações</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>terminal</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code><span class="com"># Verificar versões instaladas</span>
+docker --version
+node --version
+python --version
+git --version</code></pre>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="step" id="step-2">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <h2>Clonar o Projeto</h2>
+      </div>
+      <p>Vamos obter o código-fonte do repositório e preparar o ambiente de trabalho local.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span>terminal</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code><span class="com"># 1. Clonar o repositório</span>
+git clone https://github.com/luis-garces/trading-agent.git
+<span class="kw">cd</span> trading-agent
+
+<span class="com"># 2. Criar cópia do ficheiro de variáveis de ambiente</span>
+cp .env.example .env
+
+<span class="com"># 3. (Opcional) Executar o script automático de estrutura</span>
+<span class="com"># Linux/macOS:</span>
+chmod +x criar_estrutura.sh && ./criar_estrutura.sh
+<span class="com"># Windows PowerShell:</span>
+.\criar_estrutura.ps1</code></pre>
+      </div>
+
+      <div class="alert alert-warning">
+        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div><strong>Atenção:</strong> O ficheiro <code>.env</code> contém as tuas chaves secretas. <strong>Nunca</strong> o partilhes ou faças commit para o Git. Já está incluído no <code>.gitignore</code>.</div>
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="step" id="step-3">
+      <div class="step-header">
+        <div class="step-number">3</div>
+        <h2>Gerar Chaves de Segurança</h2>
+      </div>
+      <p>O agente cifra as chaves API em repouso usando o algoritmo <strong>Fernet</strong>. Precisas de gerar uma chave mestra única para o teu ambiente.</p>
+
+      <h3>Gerar a Chave Fernet</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>terminal</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code><span class="com"># Instalar a biblioteca cryptography (uma vez só)</span>
+pip install cryptography
+
+<span class="com"># Gerar a chave</span>
+python -c <span class="str">"from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"</span></code></pre>
+      </div>
+
+      <p>Copia o resultado (algo como <code>gAAAAABm...</code>) e cola-o no ficheiro <code>.env</code>:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span>.env</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code>FERNET_KEY=<span class="str">a_tua_chave_gerada_aqui</span>
+TRADING_MODE=<span class="kw">PAPER</span>
+MAX_DAILY_DRAWDOWN_PCT=<span class="num">15.0</span>
+MAX_POSITION_SIZE_PCT=<span class="num">2.0</span></code></pre>
+      </div>
+
+      <div class="alert alert-success">
+        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <div><strong>Boa prática:</strong> Guarda uma cópia da <code>FERNET_KEY</strong> num gestor de palavras-passe. Se a perderes, não conseguirás descifrar as chaves API já guardadas.</div>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="step" id="step-4">
+      <div class="step-header">
+        <div class="step-number">4</div>
+        <h2>Configurar as Exchanges</h2>
+      </div>
+      <p>Vamos criar as chaves API na Binance e na Coinbase com as <strong>permissões mínimas necessárias</strong>.</p>
+
+      <h3>🟡 Binance</h3>
+      <ol>
+        <li>Acede a <strong>Binance.com → API Management</strong></li>
+        <li>Clica em <em>"Create API"</em> e escolhe <em>"System generated"</em></li>
+        <li>Em permissões, ativa <strong>APENAS</strong>:
+          <ul>
+            <li>✅ Enable Reading</li>
+            <li>✅ Enable Spot & Margin Trading</li>
+            <li>❌ <strong>NUNCA</strong> ativar "Enable Withdrawals"</li>
+          </ul>
+        </li>
+        <li>Em <em>"IP Access Restrictions"</em>, escolhe <strong>"Restrict access to trusted IPs only"</strong> e insere o IP da tua máquina</li>
+        <li>Copia a <em>API Key</em> e a <em>Secret Key</em> (a secret só aparece uma vez!)</li>
+      </ol>
+
+      <h3>🔵 Coinbase Advanced</h3>
+      <ol>
+        <li>Acede a <strong>portal.coinbase.com → API</strong></li>
+        <li>Clica em <em>"Create API Key"</em></li>
+        <li>Nome: <code>trading-agent</code></li>
+        <li>Permissões: <strong>View</strong> + <strong>Trade</strong> (nunca <em>Transfer</em>)</li>
+        <li>Copia a <em>API Key</em>, <em>API Secret</em> e <em>Passphrase</em></li>
+      </ol>
+
+      <h3>Adicionar ao .env</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>.env</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code><span class="com"># Binance</span>
+BINANCE_API_KEY=<span class="str">a_tua_binance_api_key</span>
+BINANCE_API_SECRET=<span class="str">a_tua_binance_secret</span>
+
+<span class="com"># Coinbase Advanced</span>
+COINBASE_API_KEY=<span class="str">a_tua_coinbase_key</span>
+COINBASE_API_SECRET=<span class="str">a_tua_coinbase_secret</span>
+COINBASE_PASSPHRASE=<span class="str">a_tua_passphrase</span></code></pre>
+      </div>
+
+      <div class="alert alert-warning">
+        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <div><strong>Segurança obrigatória:</strong> Ativa <strong>2FA</strong> em ambas as contas. Usa <strong>IP whitelist</strong>. Nunca partilhes as tuas chaves, nem com suporte técnico.</div>
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="step" id="step-5">
+      <div class="step-header">
+        <div class="step-number">5</div>
+        <h2>Iniciar a Aplicação com Docker</h2>
+      </div>
+      <p>O <code>docker-compose.yml</code> orquestra três serviços: base de dados PostgreSQL, cache Redis e o backend FastAPI.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span>terminal</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code><span class="com"># Construir e iniciar todos os serviços</span>
+docker-compose up --build
+
+<span class="com"># Para correr em background (daemon):</span>
+docker-compose up -d --build
+
+<span class="com"># Ver logs em tempo real:</span>
+docker-compose logs -f backend</code></pre>
+      </div>
+
+      <h3>Serviços Disponíveis</h3>
+      <table>
+        <thead>
+          <tr><th>Serviço</th><th>URL</th><th>Função</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Backend API</td><td><code>http://localhost:8000</code></td><td>Lógica de trading</td></tr>
+          <tr><td>Swagger UI</td><td><code>http://localhost:8000/docs</code></td><td>Documentação interativa</td></tr>
+          <tr><td>PostgreSQL</td><td><code>localhost:5432</code></td><td>Persistência de dados</td></tr>
+          <tr><td>Redis</td><td><code>localhost:6379</code></td><td>Cache e tempo real</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Iniciar o Frontend (novo terminal)</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>terminal</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code><span class="kw">cd</span> frontend
+npm install
+npm run dev</code></pre>
+      </div>
+      <p>Acede a <code>http://localhost:3000</code> para ver o dashboard.</p>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="step" id="step-6">
+      <div class="step-header">
+        <div class="step-number">6</div>
+        <h2>Explorar o Dashboard Web</h2>
+      </div>
+      <p>O dashboard é a tua interface principal. Apresenta-se em <strong>modo escuro por defeito</strong>, com toggle para claro no canto superior direito.</p>
+
+      <h3>Secções Principais</h3>
+      <ul>
+        <li><strong>📊 Visão Geral:</strong> PnL total, capital atual, drawdown diário, número de trades ativos</li>
+        <li><strong>📈 Gráficos em Tempo Real:</strong> Preços, order book, indicadores técnicos (EMA, RSI, MACD)</li>
+        <li><strong>🎯 Sinais Ativos:</strong> Lista de sinais BUY/SELL/HOLD gerados pelas estratégias</li>
+        <li><strong>💼 Posições Abertas:</strong> Trades em curso com stop-loss e take-profit visíveis</li>
+        <li><strong>📜 Histórico:</strong> Todos os trades executados, com explicação do motivo</li>
+        <li><strong>🛑 Kill Switch:</strong> Botão de emergência para parar tudo imediatamente</li>
+      </ul>
+
+      <div class="alert alert-info">
+        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <div><strong>Tema:</strong> A tua preferência é guardada no <code>localStorage</code> e respeita o <code>prefers-color-scheme</code> do sistema como fallback.</div>
+      </div>
+    </section>
+
+    <!-- STEP 7 -->
+    <section class="step" id="step-7">
+      <div class="step-header">
+        <div class="step-number">7</div>
+        <h2>Configurar Estratégias de Trading</h2>
+      </div>
+      <p>O agente inclui três estratégias modulares. Podes ativá-las individualmente e ajustar os seus parâmetros no dashboard.</p>
+
+      <h3>1. Mean Reversion (RSI + Bollinger)</h3>
+      <p>Ideal para mercados laterais. Compra quando o preço toca na banda inferior de Bollinger <strong>e</strong> o RSI está abaixo de 30.</p>
+      <table>
+        <thead><tr><th>Parâmetro</th><th>Valor Padrão</th><th>Descrição</th></tr></thead>
+        <tbody>
+          <tr><td>RSI Period</td><td>14</td><td>Período do RSI</td></tr>
+          <tr><td>RSI Oversold</td><td>30</td><td>Limiar de sobre-venda</td></tr>
+          <tr><td>Bollinger Period</td><td>20</td><td>Período das bandas</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2. Momentum (EMA Cross + Volume)</h3>
+      <p>Segue tendências fortes. Compra quando a EMA rápida cruza acima da EMA lenta <strong>e</strong> o volume é superior à média.</p>
+
+      <h3>3. Arbitragem Inter-Exchange</h3>
+      <p>Aproveita diferenças de preço entre Binance e Coinbase. Executa compra numa exchange e venda simultânea na outra.</p>
+
+      <div class="alert alert-warning">
+        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div><strong>Risco financeiro:</strong> Nenhuma estratégia garante lucro. Testa sempre em <strong>Paper Trading</strong> durante pelo menos 30 dias antes de considerar o modo Live.</div>
+      </div>
+    </section>
+
+    <!-- STEP 8 -->
+    <section class="step" id="step-8">
+      <div class="step-header">
+        <div class="step-number">8</div>
+        <h2>Gestão de Risco</h2>
+      </div>
+      <p>O módulo de risco é <strong>obrigatório</strong> e não pode ser desativado. Protege o teu capital com múltiplas camadas de segurança.</p>
+
+      <h3>Camadas de Proteção</h3>
+      <ol>
+        <li><strong>Position Sizing:</strong> Cada trade arrisca no máximo <code>MAX_POSITION_SIZE_PCT</code> (padrão: 2%) do capital</li>
+        <li><strong>Stop-Loss Automático:</strong> Cada ordem tem SL calculado com base no ATR</li>
+        <li><strong>Take-Profit Automático:</strong> Alvo definido pelo ratio risco/recompensa (mínimo 1:2)</li>
+        <li><strong>Drawdown Diário:</strong> Se o capital cair <code>MAX_DAILY_DRAWDOWN_PCT</code> (padrão: 15%), o agente para automaticamente</li>
+        <li><strong>Kill Switch Manual:</strong> Botão de emergência no dashboard cancela todas as ordens abertas</li>
+      </ol>
+
+      <h3>Configurar Limites</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>.env</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code><span class="com"># Risco máximo por trade (1-2% recomendado)</span>
+MAX_POSITION_SIZE_PCT=<span class="num">2.0</span>
+
+<span class="com"># Drawdown diário máximo antes de pausa automática</span>
+MAX_DAILY_DRAWDOWN_PCT=<span class="num">15.0</span></code></pre>
+      </div>
+    </section>
+
+    <!-- STEP 9 -->
+    <section class="step" id="step-9">
+      <div class="step-header">
+        <div class="step-number">9</div>
+        <h2>Exportar Logs e Relatórios</h2>
+      </div>
+      <p>O módulo <code>LogExporter</code> gera relatórios profissionais em 4 formatos, com o teu cabeçalho legal e watermark de copyright.</p>
+
+      <h3>Formatos Disponíveis</h3>
+      <table>
+        <thead><tr><th>Formato</th><th>Uso Recomendado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>PDF</strong></td><td>Relatórios formatados para arquivo ou partilha</td></tr>
+          <tr><td><strong>CSV</strong></td><td>Análise em Excel/Google Sheets</td></tr>
+          <tr><td><strong>JSON</strong></td><td>Integração com outros sistemas</td></tr>
+          <tr><td><strong>Markdown</strong></td><td>Documentação e leitura direta</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Como Exportar</h3>
+      <ol>
+        <li>No dashboard, vai à secção <strong>"Histórico"</strong></li>
+        <li>Aplica os filtros desejados (datas, estratégia, exchange)</li>
+        <li>Clica em <strong>"Exportar Log"</strong></li>
+        <li>Escolhe o formato</li>
+        <li>O ficheiro é gerado em background com o nome: <code>agentlog_YYYYMMDD_HHMM_paper.pdf</code></li>
+      </ol>
+
+      <div class="alert alert-info">
+        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <div>Todos os relatórios incluem o cabeçalho legal <em>© Luís Garcês</em>, contactos, e o disclaimer de risco financeiro obrigatório.</div>
+      </div>
+    </section>
+
+    <!-- STEP 10 -->
+    <section class="step" id="step-10">
+      <div class="step-header">
+        <div class="step-number">10</div>
+        <h2>Ativar o Modo Live (com Cuidado)</h2>
+      </div>
+      <p>A transição de Paper para Live Trading é <strong>deliberadamente difícil</strong>. O agente só permite ativar o modo Live se cumprires <strong>todos</strong> estes critérios:</p>
+
+      <h3>Checklist Obrigatória</h3>
+      <ul>
+        <li>✅ Mínimo <strong>30 dias</strong> de Paper Trading contínuo</li>
+        <li>✅ Paper Trading com <strong>lucro positivo</strong> nesse período</li>
+        <li>✅ Backtest com <strong>Sharpe Ratio &gt; 1.0</strong></li>
+        <li>✅ Backtest com <strong>Max Drawdown &lt; 15%</strong></li>
+        <li>✅ Confirmação manual explícita do utilizador (duplo clique + código de verificação)</li>
+      </ul>
+
+      <h3>Ativar o Modo Live</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>.env</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code><span class="com"># Mudar de PAPER para LIVE (só após validação completa)</span>
+TRADING_MODE=<span class="kw">LIVE</span></code></pre>
+      </div>
+      <p>Depois de alterar, reinicia o Docker:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span>terminal</span>
+          <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+        </div>
+<pre><code>docker-compose restart backend</code></pre>
+      </div>
+
+      <div class="alert alert-warning">
+        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div><strong>AVISO LEGAL:</strong> Trading algorítmico envolve risco de perda total do capital. Começa sempre com montantes muito pequenos. Este sistema não constitui aconselhamento financeiro.</div>
+      </div>
+    </section>
+
+    <!-- STEP 11 -->
+    <section class="step" id="step-11">
+      <div class="step-header">
+        <div class="step-number">11</div>
+        <h2>Troubleshooting e FAQ</h2>
+      </div>
+
+      <h3>❌ "Erro de autenticação na Binance"</h3>
+      <p><strong>Causa:</strong> Chaves API incorretas ou relógio do sistema dessincronizado.</p>
+      <p><strong>Solução:</strong> Verifica as chaves no <code>.env</code> e sincroniza o relógio do sistema (a Binance rejeita pedidos com timestamp desviado &gt; 1s).</p>
+
+      <h3>❌ "Porta 5432 já em uso"</h3>
+      <p><strong>Causa:</strong> Já tens um PostgreSQL local a correr.</p>
+      <p><strong>Solução:</strong> Altera a porta no <code>docker-compose.yml</code> para <code>5433:5432</code>.</p>
+
+      <h3>❌ "Rate limit exceeded"</h3>
+      <p><strong>Causa:</strong> Excedeste o limite de pedidos da exchange.</p>
+      <p><strong>Solução:</strong> O agente já tem retry com backoff exponencial. Se persistir, reduz a frequência de atualização no dashboard.</p>
+
+      <h3>❌ "Tema não muda"</h3>
+      <p><strong>Causa:</strong> Cache do browser.</p>
+      <p><strong>Solução:</strong> Limpa o <code>localStorage</code> (DevTools → Application → Local Storage → Clear) e recarrega.</p>
+
+      <h3>📞 Suporte</h3>
+      <p>Para questões técnicas ou comerciais, contacta o autor:</p>
+      <ul>
+        <li>📧 Email: <a href="mailto:activecop@gmail.com" style="color: var(--accent);">activecop@gmail.com</a></li>
+        <li>📱 Telefone: <a href="tel:+351915020614" style="color: var(--accent);">915 020 614</a></li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-content">
+    <h3>Agente de Trading Autónomo</h3>
+    <p style="color: var(--text-muted);">Sistema open-source de trading algorítmico com gestão de risco avançada.</p>
+
+    <div class="footer-contacts">
+      <a href="mailto:activecop@gmail.com">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        activecop@gmail.com
+      </a>
+      <a href="tel:+351915020614">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        915 020 614
+      </a>
+    </div>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso Legal:</strong> Trading envolve risco de perda total do capital. Este software é fornecido "como está", sem garantias. Os relatórios e sinais gerados não constituem aconselhamento financeiro. O utilizador é o único responsável pelas suas decisões de investimento.
+    </div>
+
+    <div class="copyright">
+      <strong>Copyright © Luís Garcês — Todos os direitos reservados</strong><br>
+      <span style="font-size: 0.8rem;">Documento gerado em Setembro de 2026 · Versão 1.0</span>
+    </div>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+  // ========== THEME TOGGLE ==========
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+
+  const sunIcon = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+  const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+  function updateIcon() {
+    const theme = document.documentElement.getAttribute('data-theme');
+    themeIcon.innerHTML = theme === 'dark' ? moonIcon : sunIcon;
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateIcon();
+  });
+
+  updateIcon();
+
+  // ========== COPY CODE ==========
+  function copyCode(btn) {
+    const code = btn.closest('.code-block').querySelector('code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      const original = btn.innerHTML;
+      btn.innerHTML = '✓ Copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  // ========== PROGRESS BAR ==========
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+  });
+
+  // ========== ACTIVE NAV LINK ==========
+  const navLinks = document.querySelectorAll('.nav-link');
+  const steps = document.querySelectorAll('.step');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const activeLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (activeLink) activeLink.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  steps.forEach(step => observer.observe(step));
+
+  // ========== BACK TO TOP ==========
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>

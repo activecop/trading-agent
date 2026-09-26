@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Motor de Trading
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Cálculo de métricas, estratégias, gestão de risco e execução de ordens.
+
+FICHEIROS ESPERADOS:
+metrics.py, strategies.py, risk_manager.py, executor.py
+
+CONFIGURAÇÕES APLICÁVEIS:
+MAX_DAILY_DRAWDOWN_PCT e MAX_POSITION_SIZE_PCT configurados no .env.
+================================================================================

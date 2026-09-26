@@ -1,0 +1,15 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+Backend: http://localhost:8000
+Documentação API (Swagger): http://localhost:8000/docs
+Frontend: http://localhost:3000 (correr npm install e npm run dev na pasta frontend)
+
+⚠️ Riscos Financeiros e Segurança
+RISCO FINANCEIRO: O trading algorítmico envolve risco de perda total do capital. O modo LIVE só deve ser ativado após validação manual, backtest com Sharpe > 1, drawdown < 15% e 30 dias de lucro em Paper Trading.
+Segurança: As chaves API são cifradas em repouso (Fernet). Nunca faças commit do ficheiro .env. Utiliza sempre IP Whitelist e 2FA nas tuas contas das exchanges.
+
+📄 Exportação de Logs
+O sistema inclui um módulo LogExporter que gera relatórios profissionais em PDF, CSV, JSON e Markdown, com o cabeçalho e rodapé legais obrigatórios.

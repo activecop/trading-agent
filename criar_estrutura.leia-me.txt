@@ -1,0 +1,1 @@
+Instrução de uso: Abrir PowerShell como Administrador (ou permitir execução) e correr: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser, depois .\criar_estrutura.ps1.

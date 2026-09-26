@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Raiz do Projeto
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Ponto de entrada do monorepo. Contém orquestração, documentação e variáveis de ambiente.
+
+FICHEIROS ESPERADOS:
+.env.example, docker-compose.yml, README.md, LICENSE
+
+CONFIGURAÇÕES APLICÁVEIS:
+Definir TRADING_MODE=PAPER, gerar FERNET_KEY, configurar DATABASE_URL.
+================================================================================

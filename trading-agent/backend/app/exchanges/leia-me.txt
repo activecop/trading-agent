@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Conectores de Exchange
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Adaptadores para comunicação com Binance e Coinbase.
+
+FICHEIROS ESPERADOS:
+adapter.py, binance_conn.py, coinbase_conn.py
+
+CONFIGURAÇÕES APLICÁVEIS:
+Chaves API no .env com permissões APENAS 'Read' e 'Trade'. Rate limiting ativo.
+================================================================================

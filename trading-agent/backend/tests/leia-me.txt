@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Testes Unitários
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Validação automática das estratégias e do gestor de risco.
+
+FICHEIROS ESPERADOS:
+test_strategies.py, test_risk_manager.py
+
+CONFIGURAÇÕES APLICÁVEIS:
+Executar com 'pytest'. Mock de respostas de exchange para testes isolados.
+================================================================================

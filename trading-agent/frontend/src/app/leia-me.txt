@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Rotas e Layout
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Ponto de entrada da aplicação React, layout global e anti-FOUC.
+
+FICHEIROS ESPERADOS:
+layout.tsx, page.tsx
+
+CONFIGURAÇÕES APLICÁVEIS:
+Script inline no <head> para prevenir flash de tema claro. ThemeProvider ativo.
+================================================================================

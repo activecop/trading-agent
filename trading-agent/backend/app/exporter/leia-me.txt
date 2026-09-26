@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Exportação de Logs
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Geração de relatórios profissionais em múltiplos formatos.
+
+FICHEIROS ESPERADOS:
+log_exporter.py
+
+CONFIGURAÇÕES APLICÁVEIS:
+Dependências: reportlab (PDF). Geração assíncrona para não bloquear a UI.
+================================================================================

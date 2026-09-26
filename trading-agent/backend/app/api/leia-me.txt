@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Camada de API
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Endpoints REST e validação de dados.
+
+FICHEIROS ESPERADOS:
+routes.py, models.py
+
+CONFIGURAÇÕES APLICÁVEIS:
+Modelos Pydantic para validação estrita de inputs. CORS configurado para o frontend.
+================================================================================

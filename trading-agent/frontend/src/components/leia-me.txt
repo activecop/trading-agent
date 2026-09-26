@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Componentes UI
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Blocos de construção reutilizáveis da interface.
+
+FICHEIROS ESPERADOS:
+ThemeToggle.tsx, Dashboard.tsx, KillSwitch.tsx, Footer.tsx
+
+CONFIGURAÇÕES APLICÁVEIS:
+Tailwind CSS com cores personalizadas (#0B0E11 para dark, #F5F5F5 para light).
+================================================================================

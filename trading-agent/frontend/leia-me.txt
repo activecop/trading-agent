@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Frontend (Next.js)
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Interface de utilizador, dashboard e gestão de temas.
+
+FICHEIROS ESPERADOS:
+package.json, tailwind.config.js, src/
+
+CONFIGURAÇÕES APLICÁVEIS:
+Executar 'npm install' e 'npm run dev'. Tema escuro por defeito.
+================================================================================

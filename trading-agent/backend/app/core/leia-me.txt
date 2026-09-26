@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Núcleo do Backend
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Gestão de configurações, segurança e agendamento de tarefas.
+
+FICHEIROS ESPERADOS:
+config.py, security.py, scheduler.py
+
+CONFIGURAÇÕES APLICÁVEIS:
+Variáveis de ambiente carregadas via pydantic-settings. Chaves de API cifradas com Fernet.
+================================================================================

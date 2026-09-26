@@ -1,0 +1,45 @@
+trading-agent/
+├── .env.example                 # Variáveis de ambiente (chaves cifradas)
+├── docker-compose.yml           # Orquestração local (Postgres, Redis, Backend)
+├── README.md                    # Documentação de setup (custo zero)
+├── LICENSE                      # MIT com atribuição obrigatória a Luís Garcês
+├── backend/
+│   ├── pyproject.toml           # Dependências Python e metadados do projeto
+│   ├── app/
+│   │   ├── main.py              # Ponto de entrada FastAPI
+│   │   ├── core/
+│   │   │   ├── config.py        # Gestão de configurações e segredos (Fernet)
+│   │   │   ├── security.py      # Cifra de chaves API em repouso
+│   │   │   └── scheduler.py     # APScheduler para tarefas em segundo plano
+│   │   ├── exchanges/
+│   │   │   ├── adapter.py       # Interface comum (ExchangeAdapter)
+│   │   │   ├── binance_conn.py  # Implementação Binance (python-binance)
+│   │   │   └── coinbase_conn.py # Implementação Coinbase (coinbase-advanced-py)
+│   │   ├── engine/
+│   │   │   ├── metrics.py       # Cálculo de EMA, RSI, MACD, Bollinger, VWAP, etc.
+│   │   │   ├── strategies.py    # Mean Reversion, Momentum, Arbitragem
+│   │   │   ├── risk_manager.py  # Position sizing, SL/TP, Drawdown, Kill Switch
+│   │   │   └── executor.py      # Motor de execução (PAPER por defeito, LIVE condicional)
+│   │   ├── exporter/
+│   │   │   └── log_exporter.py  # Módulo de exportação (PDF, CSV, JSON, MD)
+│   │   └── api/
+│   │       ├── routes.py        # Endpoints para o frontend
+│   │       └── models.py        # Pydantic models para validação
+│   └── tests/
+│       ├── test_strategies.py   # Testes unitários das estratégias
+│       └── test_risk_manager.py # Testes unitários do gestor de risco
+└── frontend/
+    ├── package.json             # Dependências Next.js e metadados
+    ├── tailwind.config.js       # Configuração de temas (paleta específica)
+    ├── src/
+    │   ├── app/
+    │   │   ├── layout.tsx       # Layout raiz com script anti-FOUC e ThemeProvider
+    │   │   ├── page.tsx         # Dashboard principal
+    │   │   └── api/             # Rotas de backend (se necessário proxy)
+    │   ├── components/
+    │   │   ├── ThemeToggle.tsx  # Botão sol/lua com persistência
+    │   │   ├── Dashboard.tsx    # Gráficos, PnL, posições
+    │   │   ├── KillSwitch.tsx   # Botão de emergência "STOP ALL"
+    │   │   └── Footer.tsx       # Rodapé fixo com copyright e contactos
+    │   └── lib/
+    │       └── theme.ts         # Lógica de deteção e persistência de tema

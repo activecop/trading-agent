@@ -1,0 +1,23 @@
+# Copyright © Luís Garcês — Todos os direitos reservados
+# Contacto: 915 020 614 | activecop@gmail.com
+
+# Modo de Operação (PAPER | LIVE)
+TRADING_MODE=PAPER
+
+# Chaves de Cifra para armazenamento seguro de API Keys (gerar com: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())")
+FERNET_KEY=your_fernet_key_here
+
+# API Keys (NUNCA fazer commit destes valores. Usar apenas permissões "Read" e "Trade")
+BINANCE_API_KEY=
+BINANCE_API_SECRET=
+COINBASE_API_KEY=
+COINBASE_API_SECRET=
+COINBASE_PASSPHRASE=
+
+# Base de Dados
+DATABASE_URL=postgresql://user:password@localhost:5432/trading_agent
+REDIS_URL=redis://localhost:6379/0
+
+# Limites de Risco
+MAX_DAILY_DRAWDOWN_PCT=15.0
+MAX_POSITION_SIZE_PCT=2.0

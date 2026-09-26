@@ -1,0 +1,16 @@
+================================================================================
+Copyright © Luís Garcês — Todos os direitos reservados
+Contacto: 915 020 614 | activecop@gmail.com
+================================================================================
+
+DIRETÓRIA: Backend (Python/FastAPI)
+--------------------------------------------------------------------------------
+DESCRIÇÃO:
+Lógica principal do servidor, motores de trading e API.
+
+FICHEIROS ESPERADOS:
+pyproject.toml, app/, tests/
+
+CONFIGURAÇÕES APLICÁVEIS:
+Instalar dependências via 'uv pip install' ou 'poetry install'.
+================================================================================
